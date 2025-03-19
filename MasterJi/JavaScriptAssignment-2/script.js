@@ -40,38 +40,41 @@ const fetchVideos = async () => {
   }
 };
 
+// function to create a video card element
+function createVideoCard(video) {
+  return `
+                <div class="video-card">
+                    <div class="thumbnail">
+                        <a href="https://www.youtube.com/watch?v=${
+                          video.items.id
+                        }" target="_blank">
+                            <img src="${
+                              video.items.snippet.thumbnails.high.url
+                            }" alt="${video.items.snippet.title}" />
+                        </a>
+                    </div>
+                    <div class="video-details">
+                        <h3 class="video-title">${
+                          video.items.snippet.title
+                        }</h3>
+                        <p class="channel-name">${
+                          video.items.snippet.channelTitle
+                        }</p>
+                        <p class="upload-ago">${
+                          video.items.statistics.viewCount
+                        } views, ${timeAgo(video.items.snippet.publishedAt)}</p>
+                    </div>
+                </div>
+                `;
+}
+
 // function for display message
 function displayVideos(videoData) {
   // spread all video data to store in a single array
   allVideos = [...allVideos, ...videoData.data.data];
   //loop for show all videos
   videoData.data.data.map((video) => {
-    const videoElement = `
-                        <div class="video-card">
-                            <div class="thumbnail">
-                                <a href="https://www.youtube.com/watch?v=${
-                                  video.items.id
-                                }" target="_blank">
-                                  <img src="${
-                                    video.items.snippet.thumbnails.high.url
-                                  }" alt="${video.items.snippet.title}" />
-                                </a>
-                            </div>
-                            <div class="video-details">
-                                <h3 class="video-title">${
-                                  video.items.snippet.title
-                                }</h3>
-                                <p class="channel-name">${
-                                  video.items.snippet.channelTitle
-                                }</p>
-                                <p class="upload-ago">${
-                                  video.items.statistics.viewCount
-                                } views, ${timeAgo(
-      video.items.snippet.publishedAt
-    )}</p>
-                            </div>
-                        </div>
-                        `;
+    const videoElement = createVideoCard(video);
     videoContainer.innerHTML += videoElement;
     // condition check for load more button. not show if no more further videos available
     if (videoData.data.totalPages <= page) {
@@ -143,30 +146,7 @@ function filterVideos(searchQuery) {
     // clearing video container
     videoContainer.innerHTML = "";
     allVideos.forEach((video) => {
-      const videoElement = `
-                <div class="video-card">
-                    <div class="thumbnail">
-                        <a href="https://www.youtube.com/watch?v=${
-                          video.items.id
-                        }" target="_blank">
-                            <img src="${
-                              video.items.snippet.thumbnails.high.url
-                            }" alt="${video.items.snippet.title}" />
-                        </a>
-                    </div>
-                    <div class="video-details">
-                        <h3 class="video-title">${
-                          video.items.snippet.title
-                        }</h3>
-                        <p class="channel-name">${
-                          video.items.snippet.channelTitle
-                        }</p>
-                        <p class="upload-ago">${
-                          video.items.statistics.viewCount
-                        } views, ${timeAgo(video.items.snippet.publishedAt)}</p>
-                    </div>
-                </div>
-            `;
+      const videoElement = createVideoCard(video);
       // adding all videos to video container
       videoContainer.innerHTML += videoElement;
     });
@@ -187,33 +167,14 @@ function filterVideos(searchQuery) {
 
   // showing filtered videos
   filteredVideos.forEach((video) => {
-    const videoElement = `
-            <div class="video-card">
-                <div class="thumbnail">
-                    <a href="https://www.youtube.com/watch?v=${
-                      video.items.id
-                    }" target="_blank">
-                        <img src="${
-                          video.items.snippet.thumbnails.high.url
-                        }" alt="${video.items.snippet.title}" />
-                    </a>
-                </div>
-                <div class="video-details">
-                    <h3 class="video-title">${video.items.snippet.title}</h3>
-                    <p class="channel-name">${
-                      video.items.snippet.channelTitle
-                    }</p>
-                    <p class="upload-ago">${
-                      video.items.statistics.viewCount
-                    } views, ${timeAgo(video.items.snippet.publishedAt)}</p>
-                </div>
-            </div>
-        `;
+    const videoElement = createVideoCard(video);
     videoContainer.innerHTML += videoElement;
   });
 }
 
+const filteredVideosDebounced = debounce(filterVideos, 500);
+
 // event listener for search input
 searchVideos.addEventListener("input", (e) => {
-  filterVideos(e.target.value);
+  filteredVideosDebounced(e.target.value);
 });
