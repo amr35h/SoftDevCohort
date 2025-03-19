@@ -1,9 +1,13 @@
 // select elements from document
+const quoteContainer = document.getElementById("quote-container");
 const quoteImg = document.getElementById("quote-img");
 const content = document.getElementById("content");
 const newQuoteBtn = document.getElementById("getNewQuoteBtn");
 const copyClipboardBtn = document.getElementById("copyClipboardBtn");
 const shareTwitterBtn = document.getElementById("shareTwitterBtn");
+const exportImageBtn = document.getElementById("exportImageBtn");
+
+let getCanvas;
 
 // Api Url for Quote Data
 const quoteApiUrl = "https://api.freeapi.app/api/v1/public/quotes/quote/random";
@@ -19,8 +23,8 @@ const fetchQuote = async () => {
   try {
     const quoteResponse = await fetch(quoteApiUrl);
     const quoteData = await quoteResponse.json();
-    displayQuote(quoteData);
     changeBackgroundImage();
+    displayQuote(quoteData);
   } catch (error) {
     //error for not getting data from api
     content.innerHTML = `<p>Error getting Quote: ${error}\nPlease Try Again Later.</p>`;
@@ -39,6 +43,7 @@ function displayQuote(quoteData) {
     <p id="author">${quoteData.data.author}</p>
     `;
   content.innerHTML = quoteElement;
+  exportImage();
 }
 
 //changing background with random images
@@ -67,6 +72,7 @@ newQuoteBtn.addEventListener("click", fetchQuote);
 window.addEventListener("load", fetchQuote);
 copyClipboardBtn.addEventListener("click", copyToClipboard);
 shareTwitterBtn.addEventListener("click", shareToTwitter);
+exportImageBtn.addEventListener("click", exportImage);
 
 // copy data to clipboard
 function copyToClipboard() {
@@ -111,4 +117,34 @@ function shareToTwitter() {
   document
     .querySelectorAll("button")
     .forEach((button) => (button.disabled = false));
+}
+
+async function exportImage() {
+  // disable all buttons to avoid interruptions
+  document
+    .querySelectorAll("button")
+    .forEach((button) => (button.disabled = true));
+
+  try {
+    // converting html element in canvas
+    const canvas = await html2canvas(quoteContainer, {
+      useCORS: true,
+      backgroundColor: null,
+    });
+
+    // Converting canvas to image data
+    const imageData = canvas.toDataURL("image/jpg");
+
+    // Adding attributes to export image button
+    exportImageBtn.href = imageData;
+    exportImageBtn.download = "quote.jpg";
+  } catch (error) {
+    console.error("Error exporting image:", error);
+    alert("Failed to export image. Please try again.");
+  } finally {
+    // Enable all buttons again
+    document
+      .querySelectorAll("button")
+      .forEach((button) => (button.disabled = false));
+  }
 }
