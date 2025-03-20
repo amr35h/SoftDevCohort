@@ -3,7 +3,8 @@ const container = document.getElementById("container");
 const assignments = [
   {
     name: "JavaScript Assignment-1",
-    github: "",
+    github:
+      "https://github.com/amr35h/SoftDevCohort/tree/main/MasterJi/JavaScriptAssignment-1",
     demo: "/MasterJi/JavaScriptAssignment-1",
   },
   {
