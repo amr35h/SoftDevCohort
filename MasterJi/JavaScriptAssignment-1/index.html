@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8" />
-    <title>Calendar</title>
+    <title>Mood Tracker App</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="styles.css" />
     <link
@@ -50,6 +50,12 @@
       <div class="modal-header">
         <h2>Add your today's mood</h2>
         <span class="close" id="addModalCloseBtn">&times;</span>
+      </div>
+      <div class="modal-body">
+        <span onclick="addMood('Happy')">😊<br />Happy</span>
+        <span onclick="addMood('Sad')">😔<br />Sad</span>
+        <span onclick="addMood('Neutral')">😐<br />Neutral</span>
+        <span onclick="addMood('Excited')">🤩<br />Excited</span>
       </div>
     </div>
     <div class="update-mood-modal" id="updateMoodModal">

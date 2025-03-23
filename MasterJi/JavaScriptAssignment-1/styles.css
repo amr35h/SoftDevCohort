@@ -31,6 +31,9 @@ body {
   font-size: 20px;
   font-weight: 600;
 }
+.update-today-mood {
+  display: none;
+}
 
 .add-today-mood button,
 .update-today-mood button {
@@ -45,7 +48,7 @@ body {
   display: none;
   position: absolute;
   margin: auto auto;
-  height: 300px;
+  height: 200px;
   width: 500px;
   border-radius: 20px;
   padding: 20px;
@@ -59,6 +62,35 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.close {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.modal-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+  margin-top: 25px;
+}
+
+.modal-body span {
+  background-color: #fff;
+  width: 23%;
+  height: 100px;
+  text-align: center;
+  font-size: 20px;
+  padding: 25px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.modal-body span:hover {
+  transform: scale(1.2);
 }
 
 .mood-tracker-container header {

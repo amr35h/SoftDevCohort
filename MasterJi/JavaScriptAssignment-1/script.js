@@ -26,6 +26,26 @@ updateModalCloseBtn.onclick = () => {
   updateMoodModal.style.display = "none";
 };
 
+function addMood(mood) {
+  const existingMoods =
+    JSON.parse(localStorage.getItem("moodObjectString")) || [];
+
+  const moodObject = {
+    todaymood: {
+      date: date,
+      mood: mood,
+    },
+  };
+
+  existingMoods.push(moodObject);
+
+  const moodObjectString = JSON.stringify(existingMoods);
+  localStorage.setItem("moodObjectString", moodObjectString);
+  console.log("add to local");
+  alert("Today's Mood Added");
+  addMoodModal.style.display = "none";
+}
+
 // Array of month names
 const months = [
   "January",
